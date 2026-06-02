@@ -1,0 +1,90 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Next.js
+.next/
+**/.next/
+out/
+
+# Vite / React
+dist/
+build/
+
+# Cache
+.cache/
+.turbo/
+.local/
+pnpm-store/
+.pnpm-store/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+
+# TypeScript
+*.tsbuildinfo
+
+# Coverage
+coverage/
+.nyc_output/
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# OS Files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Replit
+.replit
+.replit-artifact/
+
+# Project Specific
+artifacts/api-server/dist/
+artifacts/api-server/node_modules/
+artifacts/api-server/.env
+
+artifacts/lingua-live-next/.next/
+artifacts/lingua-live-next/node_modules/
+artifacts/lingua-live-next/.env.local
+
+# PNPM Cache
+.local/share/pnpm/
+.pnpm-store/
+
+# Turbopack Cache
+**/turbopack/
+**/.next/cache/
+
+# Temporary Files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Archives
+*.zip
+*.rar
+*.tar
+*.tar.gz
+*.7z
+
+# Media (optional)
+*.mp4
+*.mov
