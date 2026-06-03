@@ -3,12 +3,11 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "npm run dev --prefix artifacts/lingua-live-next",
-    "dev:api": "npm run dev --prefix artifacts/api-server",
-    "dev:full": "concurrently \"npm run dev:api\" \"npm run dev\"",
-    "install:all": "npm install --prefix artifacts/api-server && npm install --prefix artifacts/lingua-live-next",
-    "build": "npm run build --prefix artifacts/lingua-live-next",
-    "typecheck": "npm run typecheck --prefix artifacts/lingua-live-next"
+    "dev": "pnpm --filter @workspace/lingua-live-next dev",
+    "dev:api": "pnpm --filter @workspace/api-server dev",
+    "dev:full": "concurrently \"pnpm dev:api\" \"pnpm dev\"",
+    "build": "pnpm --filter @workspace/lingua-live-next build",
+    "typecheck": "pnpm --filter @workspace/lingua-live-next typecheck"
   },
   "private": true,
   "devDependencies": {
