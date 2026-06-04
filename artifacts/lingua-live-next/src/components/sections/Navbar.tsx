@@ -90,6 +90,13 @@ export function Navbar() {
             {user ? (
               <>
                 <Button
+                  onClick={() => router.push("/call")}
+                  className="border border-violet-500/40 text-violet-300 bg-violet-500/10 hover:bg-violet-500/20 rounded-full text-sm font-semibold"
+                  variant="outline"
+                >
+                  🎤 Live Call
+                </Button>
+                <Button
                   onClick={() => router.push("/dashboard")}
                   variant="outline"
                   className="border-white/20 text-white/80 hover:bg-white/10"
@@ -251,11 +258,13 @@ function AuthModal({ isOpen, onClose, isSignUp }: { isOpen: boolean; onClose: ()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const { signIn, signUp } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
     setLoading(true);
     try {
       if (isSignUp) {
@@ -265,8 +274,8 @@ function AuthModal({ isOpen, onClose, isSignUp }: { isOpen: boolean; onClose: ()
       }
       onClose();
       router.push("/dashboard");
-    } catch (error) {
-      console.error(error);
+    } catch (err: any) {
+      setError(err.message ?? "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -306,6 +315,11 @@ function AuthModal({ isOpen, onClose, isSignUp }: { isOpen: boolean; onClose: ()
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {error && (
+            <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-300 text-sm">
+              <span className="shrink-0">⚠</span> {error}
+            </div>
+          )}
           {isSignUp && (
             <div>
               <label className="block text-sm font-medium text-white/70 mb-2">Full Name</label>

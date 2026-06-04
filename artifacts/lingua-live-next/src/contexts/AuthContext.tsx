@@ -1,4 +1,3 @@
-
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
@@ -16,7 +15,7 @@ type AuthContextType = {
   user: User | null;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (name: string, email: string, password: string) => Promise<void>;
-  signOut: () => void;
+  signOut: () => Promise<void>;
   upgradePlan: (newPlan: SubscriptionTier) => void;
   isLoading: boolean;
 };
@@ -27,57 +26,48 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // On mount — verify session cookie with server
   useEffect(() => {
-    // Check if user is in localStorage on initial load
-    const savedUser = localStorage.getItem("linguaLiveUser");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-    setIsLoading(false);
+    fetch("/api/auth/me", { credentials: "include" })
+      .then(r => r.json())
+      .then(data => {
+        if (data.user) setUser(data.user);
+      })
+      .catch(() => {})
+      .finally(() => setIsLoading(false));
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    // Mock sign in - in real app, call your backend API
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // For demo: any email/password works
-    const mockUser: User = {
-      id: "1",
-      name: email.split("@")[0],
-      email,
-      subscription: email.includes("premium") ? "premium" : email.includes("basic") ? "basic" : "free"
-    };
-    
-    setUser(mockUser);
-    localStorage.setItem("linguaLiveUser", JSON.stringify(mockUser));
+    const res = await fetch("/api/auth/signin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error ?? "Sign in failed");
+    setUser(data.user);
   };
 
   const signUp = async (name: string, email: string, password: string) => {
-    // Mock sign up - in real app, call your backend API
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const mockUser: User = {
-      id: Date.now().toString(),
-      name,
-      email,
-      subscription: "free" // Default to free tier
-    };
-    
-    setUser(mockUser);
-    localStorage.setItem("linguaLiveUser", JSON.stringify(mockUser));
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ name, email, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error ?? "Sign up failed");
+    setUser(data.user);
   };
 
-  const signOut = () => {
+  const signOut = async () => {
+    await fetch("/api/auth/signout", { method: "POST", credentials: "include" }).catch(() => {});
     setUser(null);
-    localStorage.removeItem("linguaLiveUser");
   };
 
   const upgradePlan = (newPlan: SubscriptionTier) => {
-    if (user) {
-      const updatedUser = { ...user, subscription: newPlan };
-      setUser(updatedUser);
-      localStorage.setItem("linguaLiveUser", JSON.stringify(updatedUser));
-    }
+    if (user) setUser({ ...user, subscription: newPlan });
   };
 
   return (
@@ -89,8 +79,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
+  if (!context) throw new Error("useAuth must be used within an AuthProvider");
   return context;
 }

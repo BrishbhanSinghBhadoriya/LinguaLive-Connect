@@ -1,25 +1,19 @@
+import { createServer } from "http";
 import app from "./app";
+import { attachWsVoice } from "./ws-voice.js";
 import { logger } from "./lib/logger";
 
 const rawPort = process.env["PORT"];
-
-if (!rawPort) {
-  throw new Error(
-    "PORT environment variable is required but was not provided.",
-  );
-}
-
+if (!rawPort) throw new Error("PORT environment variable is required.");
 const port = Number(rawPort);
+if (Number.isNaN(port) || port <= 0) throw new Error(`Invalid PORT: "${rawPort}"`);
 
-if (Number.isNaN(port) || port <= 0) {
-  throw new Error(`Invalid PORT value: "${rawPort}"`);
-}
+const httpServer = createServer(app);
 
-app.listen(port, (err) => {
-  if (err) {
-    logger.error({ err }, "Error listening on port");
-    process.exit(1);
-  }
+// Attach WebSocket handler before listen so the 'upgrade' listener is
+// registered before any client can send an HTTP upgrade request.
+attachWsVoice(httpServer);
 
-  logger.info({ port }, "Server listening");
+httpServer.listen(port, () => {
+  logger.info({ port }, "LinguaLive API + WebSocket voice server running");
 });

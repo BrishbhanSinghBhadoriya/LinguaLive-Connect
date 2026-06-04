@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express, { type Express } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
@@ -31,9 +32,11 @@ app.use(
 );
 
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-domain.com'] 
-    : ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3001'],
+  origin: process.env.NODE_ENV === 'production'
+    // Set ALLOWED_ORIGINS as comma-separated list in Railway env vars
+    // e.g. https://lingua-live.vercel.app,https://yourdomain.com
+    ? (process.env.ALLOWED_ORIGINS ?? "").split(",").map(o => o.trim()).filter(Boolean)
+    : ['http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true
 }));
 

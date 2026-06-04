@@ -1,0 +1,9 @@
+{
+  "framework": "nextjs",
+  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
+  "buildCommand": "cd ../.. && pnpm --filter @workspace/lingua-live-next build",
+  "outputDirectory": "artifacts/lingua-live-next/.next",
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

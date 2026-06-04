@@ -1,6 +1,6 @@
 "use client"
 import { motion } from "framer-motion";
-import { GraduationCap, HeartPulse, Headphones, Landmark, Plane, PhoneCall, Building2 } from "lucide-react";
+import { GraduationCap, HeartPulse, Headphones, Landmark, Plane, PhoneCall, Building2, ShoppingCart } from "lucide-react";
 
 const industries = [
   { Icon: GraduationCap, name: "Education",        desc: "Bridge classroom language gaps for multilingual students",             color: "text-blue-400",   bg: "bg-blue-500/10 border-blue-500/20 hover:bg-blue-500/20 hover:border-blue-500/40" },
@@ -10,6 +10,7 @@ const industries = [
   { Icon: Plane,         name: "Travel & Tourism",  desc: "Help travelers navigate with confidence",                            color: "text-cyan-400",   bg: "bg-cyan-500/10 border-cyan-500/20 hover:bg-cyan-500/20 hover:border-cyan-500/40" },
   { Icon: PhoneCall,     name: "Call Centers",      desc: "Scale multilingual support without multilingual staff",              color: "text-green-400",  bg: "bg-green-500/10 border-green-500/20 hover:bg-green-500/20 hover:border-green-500/40" },
   { Icon: Building2,     name: "Enterprise",        desc: "Unify global teams across language boundaries",                      color: "text-orange-400", bg: "bg-orange-500/10 border-orange-500/20 hover:bg-orange-500/20 hover:border-orange-500/40" },
+  { Icon: ShoppingCart,  name: "E-commerce",        desc: "Connect with global customers in their native language",             color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20 hover:bg-emerald-500/20 hover:border-emerald-500/40" },
 ];
 
 export function Industries() {
