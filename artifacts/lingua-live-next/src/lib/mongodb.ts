@@ -1,11 +1,5 @@
 import mongoose from "mongoose";
 
-const MONGO_URI = process.env.MONGO_URI!;
-
-if (!MONGO_URI) {
-  throw new Error("MONGO_URI environment variable is not defined");
-}
-
 // Cache the connection across hot reloads in dev
 let cached = (global as any).mongoose as {
   conn: typeof mongoose | null;
@@ -17,6 +11,11 @@ if (!cached) {
 }
 
 export async function connectDB() {
+  const MONGO_URI = process.env.MONGO_URI;
+  if (!MONGO_URI) {
+    throw new Error("MONGO_URI environment variable is not defined");
+  }
+
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
