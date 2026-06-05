@@ -2,13 +2,14 @@
   "name": "workspace",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {
-    "dev": "pnpm --filter @workspace/lingua-live-next dev",
-    "dev:api": "pnpm --filter @workspace/api-server dev",
-    "dev:full": "concurrently \"pnpm dev:api\" \"pnpm dev\"",
-    "build": "pnpm --filter @workspace/lingua-live-next build",
-    "typecheck": "pnpm --filter @workspace/lingua-live-next typecheck"
-  },
+"scripts": {
+  "dev": "pnpm --filter @workspace/lingua-live-next dev",
+  "dev:api": "pnpm --filter @workspace/api-server dev",
+  "dev:full": "concurrently \"pnpm dev:api\" \"pnpm dev\"",
+  "build": "pnpm --filter @workspace/lingua-live-next build",
+  "typecheck": "pnpm --filter @workspace/lingua-live-next typecheck",
+  "start": "pnpm --filter @workspace/lingua-live-next start"
+},
   "private": true,
   "devDependencies": {
     "prettier": "^3.8.3",
